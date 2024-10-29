@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./templates/**/*.html", "./node_modules/flowbite/**/*.js"],
-  darkMode: "media",
+  darkMode: "white",
   theme: {
     extend: {
       colors: {
