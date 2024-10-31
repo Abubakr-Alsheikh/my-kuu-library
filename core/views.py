@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 
+from django.db.models import CharField, Value, F
 from core.models import Book, Category, EJournal, Resource
 
 
@@ -19,7 +20,13 @@ def home(request):
 
 @login_required
 def resources(request):
-    return render(request, 'resources.html') # Create this template
+    books = Book.objects.all().values('id', 'title', 'description', 'image', 'date_published')
+    e_journals = EJournal.objects.all().values('id', 'title', 'description', 'image', 'date_published')
+
+    combined_resources = books.union(e_journals).order_by('-date_published')
+
+
+    return render(request, 'user/resources.html', {'combined_resources': combined_resources})
 
 @login_required
 def reports(request):
