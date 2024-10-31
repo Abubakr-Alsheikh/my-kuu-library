@@ -40,16 +40,19 @@
           </svg>
         </button>
       </div>
-      <div class="mr-5 hidden w-full items-center justify-between md:order-1 md:flex md:w-auto md:flex-1 md:justify-end md:justify-items-end" id="navbar-user">
+      <div class="mr-10 hidden w-full items-center justify-between md:order-1 md:flex md:w-auto md:flex-1 md:justify-end md:justify-items-end" id="navbar-user">
         <ul class="dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700 mt-4 flex flex-col rounded-lg border border-gray-100 bg-gray-50 p-4 font-medium md:mt-0 md:flex-row md:space-x-8 md:border-0 md:bg-white md:p-0 rtl:space-x-reverse">
           <li>
-            <a href="{% url 'core:resources' %}" class="dark:text-white md:dark:hover:text-primary-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 block rounded px-3 py-2 text-gray-900 hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-primary-700" aria-current="page">Books & Resources</a>
+            <a href="{% url 'core:notifications' %}" class="dark:text-white md:dark:hover:text-primary-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 block rounded px-3 py-2 text-gray-900 hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-primary-700">Notifications</a>
           </li>
           <li>
             <a href="{% url 'core:reports' %}" class="dark:text-white md:dark:hover:text-primary-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 block rounded px-3 py-2 text-gray-900 hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-primary-700">Reports</a>
           </li>
           <li>
-            <a href="{% url 'core:notifications' %}" class="dark:text-white md:dark:hover:text-primary-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 block rounded px-3 py-2 text-gray-900 hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-primary-700">Notifications</a>
+            <a href="{% url 'core:resources' %}" class="dark:text-white md:dark:hover:text-primary-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 block rounded px-3 py-2 text-gray-900 hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-primary-700">Resources</a>
+          </li>
+          <li>
+            <a href="{% url 'core:home' %}" class="dark:text-white md:dark:hover:text-primary-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 block rounded px-3 py-2 text-gray-900 hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-primary-700">home</a>
           </li>
         </ul>
       </div>
