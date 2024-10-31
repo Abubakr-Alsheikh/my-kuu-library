@@ -1,6 +1,4 @@
-{% extends "_base.html" %} {% load static %} {% block content %}
-
-{% include "include/header.html" %}
+{% extends "_base.html" %} {% load static %} {% block content %} {% include "include/header.html" %}
 
 <section class="bg-center bg-no-repeat bg-blend-multiply" style="background-image: url({% static 'images/background.webp' %})">
   <div class="mx-auto max-w-screen-xl px-4 py-24 text-center lg:py-56">
@@ -24,28 +22,50 @@
 <section class="container mx-auto mt-16 px-5 text-center md:px-0">
   <h1 class="mb-16 text-3xl font-extrabold leading-none tracking-tight text-primary-600 md:text-4xl">Our Categories</h1>
   <div class="mt-5 grid grid-cols-1 justify-items-center gap-5 md:grid-cols-3">
+    {% for category in categories %}
     <figure class="min-w-sm relative cursor-pointer grayscale filter transition-all duration-300 hover:grayscale-0">
-      <a href="#"> <img class="rounded-lg" src="{% static "images/book.jpg" %}" alt="image description" /> </a>
+      <a href="{{category.get_absolute_url}}"> <img class="rounded-lg" src="{{ category.image.url }}" alt="{{ category.name }}" /></a>
       <figcaption class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 px-4 text-5xl text-white">
-        <p>Category</p>
+        <p>{{ category.name }}</p>
       </figcaption>
     </figure>
+{% endfor %}
   </div>
 </section>
 
 <section class="container mx-auto mt-16 px-5 text-center sm:px-0">
-  <h1 class="mb-16 text-3xl font-extrabold leading-none tracking-tight text-primary-600 md:text-4xl">Featured Resources</h1>
+  <h1 class="mb-16 text-3xl font-extrabold leading-none tracking-tight text-primary-600 md:text-4xl">Featured Books</h1>
   <div class="mt-5 grid grid-cols-1 justify-items-center gap-5 text-left lg:grid-cols-2 xl:grid-cols-3">
-    <a href="#" class="dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 flex flex-col items-center rounded-lg border border-gray-200 bg-white shadow hover:bg-gray-100 md:max-w-xl md:flex-row">
-      <img class="h-96 w-full rounded-t-lg object-cover md:h-auto md:w-48 md:rounded-none md:rounded-s-lg" src="{% static "images/book-image.jpg" %}" alt="">
+    {% for resource in featured_books %}
+    <a href="{{resource.get_absolute_url}}" class="dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 flex flex-col items-center rounded-lg border border-gray-200 bg-white shadow hover:bg-gray-100 md:max-w-xl md:flex-row">
+      <img class="h-96 w-full rounded-t-lg object-cover md:h-auto md:w-48 md:rounded-none md:rounded-s-lg" src="{{ resource.image.url }}" alt="{{ resource.title }}">
       <div class="flex flex-col justify-between p-4 leading-normal">
-        <h5 class="dark:text-white mb-2 text-2xl font-bold tracking-tight text-gray-900">Title</h5>
-        <p class="dark:text-gray-400 mb-3 font-normal text-gray-700">Body text for whatever you’d like to say. Add main takeaway points, quotes, anecdotes, or even a very very short story. </p>
+        <h5 class="dark:text-white mb-2 text-2xl font-bold tracking-tight text-gray-900">
+          {{ resource.title }}
+        </h5>
+        <p class="dark:text-gray-400 mb-3 font-normal text-gray-700">{{ resource.description }}</p>
       </div>
     </a>
+    {% endfor %}
   </div>
   <button type="button" class="dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 my-7 rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300">Show more</button>
 </section>
-{% include "include/footer.html" %}
 
-{% endblock content %}
+<section class="container mx-auto mt-16 px-5 text-center sm:px-0">
+  <h1 class="mb-16 text-3xl font-extrabold leading-none tracking-tight text-primary-600 md:text-4xl">Featured Ejournal</h1>
+  <div class="mt-5 grid grid-cols-1 justify-items-center gap-5 text-left lg:grid-cols-2 xl:grid-cols-3">
+    {% for resource in featured_ejournal %}
+    <a href="{{resource.get_absolute_url}}" class="dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 flex flex-col items-center rounded-lg border border-gray-200 bg-white shadow hover:bg-gray-100 md:max-w-xl md:flex-row">
+      <img class="h-96 w-full rounded-t-lg object-cover md:h-auto md:w-48 md:rounded-none md:rounded-s-lg" src="{{ resource.image.url }}" alt="{{ resource.title }}">
+      <div class="flex flex-col justify-between p-4 leading-normal">
+        <h5 class="dark:text-white mb-2 text-2xl font-bold tracking-tight text-gray-900">
+          {{ resource.title }}
+        </h5>
+        <p class="dark:text-gray-400 mb-3 font-normal text-gray-700">{{ resource.description }}</p>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+  <button type="button" class="dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 my-7 rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300">Show more</button>
+</section>
+{% include "include/footer.html" %} {% endblock content %}
