@@ -113,6 +113,8 @@ USE_I18N = True
 
 USE_TZ = True
 
+LOGIN_REDIRECT_URL = 'core:home' # Redirect to home after successful login
+LOGOUT_REDIRECT_URL = 'login' # Redirect to login after logout
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
@@ -120,6 +122,8 @@ USE_TZ = True
 STATIC_URL = "static/"
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -130,4 +134,8 @@ COMPRESS_ROOT = BASE_DIR / "static"
 
 COMPRESS_ENABLED = True
 
-STATICFILES_FINDERS = ("compressor.finders.CompressorFinder",)
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "compressor.finders.CompressorFinder",
+]
