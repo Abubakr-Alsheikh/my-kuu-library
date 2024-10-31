@@ -11,5 +11,5 @@ urlpatterns = [
     path('notifications/', views.notifications, name='notifications'),
     path('profile/', views.profile, name='profile'),
     path('categories/<int:pk>/', views.category_detail, name='category_detail'),
-    path('resources/<int:pk>/', views.resource_detail, name='resource_detail'),
+    path('resources/<str:resource_type>/<int:pk>/', views.resource_detail, name='resource_detail'), # Updated path
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

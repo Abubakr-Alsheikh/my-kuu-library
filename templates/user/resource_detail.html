@@ -1,0 +1,43 @@
+{% extends "_base.html" %} {% load static %} {% block content %} {% include "include/header.html" %}
+<section class="dark:bg-gray-900 bg-white py-8 antialiased md:py-16">
+    <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
+      <div class="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
+        <div class="mx-auto max-w-md shrink-0 lg:max-w-lg">
+          <img class="dark:hidden w-full" src="{{ resource.image.url }}" alt="{{ resource.title }}" /> 
+          <img class="dark:block hidden w-full" src="{{ resource.image.url }}" alt="{{ resource.title }}" /> 
+        </div>
+
+        <div class="mt-6 sm:mt-8 lg:mt-0">
+          <h1 class="dark:text-white text-xl font-semibold text-gray-900 sm:text-2xl">
+            {{ resource.title }} 
+          </h1>
+
+          {% if resource_type == 'book' %}
+            <p class="dark:text-gray-400 text-gray-500">By: {{ author }}</p>
+            <p class="dark:text-gray-400 text-gray-500">Publisher: {{ publisher }}</p>
+            {% if isbn %}
+                <p class="dark:text-gray-400 text-gray-500">ISBN: {{ isbn }}</p>
+            {% endif %}
+            {% if availability %}
+                <p class="dark:text-gray-400 text-gray-500">Availability: Available</p>
+            {% else %}
+                <p class="dark:text-gray-400 text-gray-500">Availability: Not Available</p>
+            {% endif %}
+            {% if access_link %}
+                <p class="dark:text-gray-400 text-gray-500">Access Link: <a href="{{ access_link }}">{{ access_link }}</a></p>
+            {% endif %}
+          {% elif resource_type == 'e_journal' %}
+            <p class="dark:text-gray-400 text-gray-500">Publisher: {{ publisher }}</p>
+            {% if issn %}
+                <p class="dark:text-gray-400 text-gray-500">ISSN: {{ issn }}</p>
+            {% endif %}
+          {% endif %}
+
+          <p class="dark:text-gray-400 mb-6 text-gray-500">
+            {{ resource.description }}
+          </p>
+        </div>
+      </div>
+    </div>
+</section>
+{% include "include/footer.html" %} {% endblock content %}

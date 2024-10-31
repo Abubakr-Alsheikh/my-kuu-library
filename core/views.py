@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 
 from core.models import Book, Category, EJournal, Resource
@@ -37,8 +37,8 @@ def profile(request):
 @login_required
 def category_detail(request, pk):
     category = get_object_or_404(Category, pk=pk)
-    books = category.book_resources.all()  # Get all books in this category
-    e_journals = category.ejournal_resources.all() # Get all e-journals in this category
+    books = category.books.all()  # Get all books in this category
+    e_journals = category.e_journals.all() # Get all e-journals in this category
     return render(request, 'user/category_detail.html', {
         'category': category,
         'books': books,
@@ -46,6 +46,32 @@ def category_detail(request, pk):
     })
 
 @login_required
-def resource_detail(request, pk):
-    resource = get_object_or_404(Resource, pk=pk)
-    return render(request, 'resource_detail.html', {'resource': resource})
+def resource_detail(request, resource_type,  pk):
+    if resource_type == 'book':
+        resource = get_object_or_404(Book, pk=pk)
+    elif resource_type == 'e_journal':
+        resource = get_object_or_404(EJournal, pk=pk)
+    else:
+        return redirect('core:home') # Handle invalid resource_type
+    # Determine the specific resource type
+    if isinstance(resource, Book):
+        additional_fields = {
+            'author': resource.author,
+            'publisher': resource.publisher,
+            'isbn': resource.isbn,
+            'availability': resource.availability,
+        }
+    elif isinstance(resource, EJournal):
+        additional_fields = {
+            'publisher': resource.publisher,
+            'issn': resource.issn,
+        }
+    else:
+        resource_type = 'unknown'
+        additional_fields = {}
+
+    return render(request, 'user/resource_detail.html', {
+        'resource': resource,
+        'resource_type': resource_type,
+        **additional_fields
+    })
