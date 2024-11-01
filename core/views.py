@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 
 from django.utils import timezone
 from django.db.models import Q
-from core.models import Book, Category, EJournal, Report, ViewedResource
+from core.models import Book, Category, EJournal, Notification, Report, ViewedResource
 from django.contrib import messages
 
 
@@ -127,10 +127,6 @@ def report_detail(request, pk):
     return render(request, 'home/report_detail.html', {'report': report})
 
 @login_required
-def notifications(request):
-    return render(request, 'notifications.html')  # Create this template
-
-@login_required
 def profile(request):
     viewed_resources = ViewedResource.objects.filter(user=request.user).order_by('-date_viewed')
     
@@ -170,3 +166,11 @@ def add_report(request):
         else:
             messages.error(request, 'Please fill in all fields.')
     return render(request, 'user/add_report.html')
+
+@login_required
+def notifications(request):
+    notifications = Notification.objects.all().order_by('-timestamp') #Get all notifications, newest first
+    context = {
+        'notifications': notifications
+    }
+    return render(request, 'user/notifications.html', context)

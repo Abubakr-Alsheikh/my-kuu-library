@@ -82,3 +82,13 @@ class ViewedResource(models.Model):
 
     def __str__(self):  # For easier debugging in admin
         return f"{self.user.username} viewed {self.resource_type} {self.resource_id} on {self.date_viewed}"
+
+
+class Notification(models.Model):
+    content = models.TextField()
+    sender = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Notification: {self.content[:50]}..."
