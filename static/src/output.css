@@ -1587,6 +1587,10 @@ input:checked + .toggle-bg {
   border-width: 0px;
 }
 
+.border-2 {
+  border-width: 2px;
+}
+
 .border-t-2 {
   border-top-width: 2px;
 }
@@ -1619,6 +1623,16 @@ input:checked + .toggle-bg {
 .border-gray-300 {
   --tw-border-opacity: 1;
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
+}
+
+.border-b-primary-300 {
+  --tw-border-opacity: 1;
+  border-bottom-color: rgb(134 239 172 / var(--tw-border-opacity));
+}
+
+.border-b-primary-700 {
+  --tw-border-opacity: 1;
+  border-bottom-color: rgb(21 128 61 / var(--tw-border-opacity));
 }
 
 .\!bg-gray-50 {
