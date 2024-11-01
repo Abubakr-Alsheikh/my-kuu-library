@@ -1,7 +1,7 @@
-{% extends "_base.html" %} {% load static %} {% block content %} {% include "include/header.html" %}
+{% extends "home/_base_home.html" %} {% block head_title %} Report Detail - {{report.title}} {% endblock head_title %} {% load static %} {% block content %}
 <h1>{{ report.title }}</h1>
 <p>{{ report.content|safe }}</p>
 <p class="dark:text-gray-400 text-sm text-gray-500">
   Published by: {{  report.author.username }} - {{ report.date_published|date:"F j, Y" }}
 </p>
-{% include "include/footer.html" %} {% endblock content %}
+{% endblock content %}

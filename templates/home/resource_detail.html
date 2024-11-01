@@ -1,4 +1,4 @@
-{% extends "_base.html" %} {% load static %} {% block content %} {% include "include/header.html" %}
+{% extends "home/_base_home.html" %} {% block head_title %} Resource Detail - {{resource.title}} {% endblock head_title %} {% load static %} {% block content %}
 <section class="dark:bg-gray-900 bg-white py-8 antialiased md:py-16">
     <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
       <div class="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
@@ -40,4 +40,4 @@
       </div>
     </div>
 </section>
-{% include "include/footer.html" %} {% endblock content %}
+{% endblock content %}

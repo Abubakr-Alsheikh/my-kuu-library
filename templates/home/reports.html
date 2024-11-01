@@ -1,4 +1,4 @@
-{% extends "_base.html" %} {% load static %} {% block content %} {% include "include/header.html" %}
+{% extends "home/_base_home.html" %} {% block head_title %} My KKU Library - Reports {% endblock head_title %} {% load static %} {% block content %}
 <section class="container mx-auto mt-16 px-5 text-center sm:px-0">
     <h1 class="mb-16 text-3xl font-extrabold leading-none tracking-tight text-primary-600 md:text-4xl">Reports</h1>
   
@@ -14,4 +14,4 @@
       {% endfor %}
     </div>
   </section>
-{% include "include/footer.html" %} {% endblock content %}
+  {% endblock content %}

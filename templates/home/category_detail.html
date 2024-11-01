@@ -1,5 +1,4 @@
-{% extends "_base.html" %} {% load static %} {% block content %} {% include "include/header.html" %}
-
+{% extends "home/_base_home.html" %} {% block head_title %} Category detail - {{ category.name }} {% endblock head_title %} {% load static %} {% block content %}
 <section class="container mx-auto my-14 px-5 text-center sm:px-0">
   <h1 class="mb-4 text-center text-3xl font-extrabold leading-none tracking-tight text-primary-600 md:text-2xl">{{ category.name }}</h1>
   <h2 class="mb-4 text-center text-3xl font-extrabold leading-none tracking-tight text-primary-800 md:text-lg">{{category.description}}</h2>

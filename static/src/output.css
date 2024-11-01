@@ -1277,6 +1277,14 @@ input:checked + .toggle-bg {
   margin-inline-start: 0.625rem;
 }
 
+.-ml-1 {
+  margin-left: -0.25rem;
+}
+
+.mr-1 {
+  margin-right: 0.25rem;
+}
+
 .block {
   display: block;
 }
@@ -1349,6 +1357,10 @@ input:checked + .toggle-bg {
   max-height: 24rem;
 }
 
+.min-h-screen {
+  min-height: 100vh;
+}
+
 .w-1\/2 {
   width: 50%;
 }
@@ -1392,6 +1404,10 @@ input:checked + .toggle-bg {
 .w-fit {
   width: -moz-fit-content;
   width: fit-content;
+}
+
+.w-6 {
+  width: 1.5rem;
 }
 
 .min-w-96 {
@@ -1442,6 +1458,10 @@ input:checked + .toggle-bg {
 
 .shrink-0 {
   flex-shrink: 0;
+}
+
+.flex-grow {
+  flex-grow: 1;
 }
 
 .-translate-x-1\/2 {

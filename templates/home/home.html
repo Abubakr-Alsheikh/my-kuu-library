@@ -1,5 +1,6 @@
-{% extends "_base.html" %} {% load static %} {% block content %} {% include "include/header.html" %}
-
+{% extends "home/_base_home.html" %} 
+{% block head_title %} My KKU Library {% endblock head_title %}
+{% load static %} {% block content %} 
 <section class="bg-center bg-no-repeat bg-blend-multiply" style="background-image: url({% static 'images/background.webp' %})">
   <div class="mx-auto max-w-screen-xl px-4 py-24 text-center lg:py-56">
     <h1 class="mb-10 text-4xl font-extrabold leading-none tracking-tight text-white md:text-5xl lg:text-6xl">Welcome to My KKU Library! Your gateway to knowledge and discovery.</h1>
@@ -51,4 +52,4 @@
   </div>
   <a href="{% url "core:resources" %}" type="button" class="dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 my-7 inline-block rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300">Show more</a>
 </section>
-{% include "include/footer.html" %} {% endblock content %}
+{% endblock content %}
