@@ -1,8 +1,4 @@
-{% extends "_base.html" %}
-{% load static %}
-{% block content %}
-{% include "user/header.html" %}
-
+{% extends "user/_base_home.html" %} {% block head_title %} Your Reports {% endblock head_title %} {% load static %} {% block content %}
 <div class="container mx-auto my-10">
   <div class="relative overflow-x-auto p-4 shadow-md sm:rounded-lg">
     <div class="flex-column flex flex-wrap items-center justify-between space-y-4 pb-4 sm:flex-row sm:space-y-0">
@@ -44,6 +40,10 @@
   </div>
 </div>
 
+{% endblock content %}
+
+{% block extra_body %}
+
 <script>
   const searchInput = document.getElementById('table-search');
   const tableRows = document.querySelectorAll('tbody tr');
@@ -61,6 +61,4 @@
     });
   });
 </script>
-
-{% include "include/footer.html" %}
-{% endblock content %}
+{% endblock extra_body %}

@@ -1,8 +1,4 @@
-{% extends "_base.html" %}
-{% load static %}
-{% block content %}
-{% include "user/header.html" %}
-
+{% extends "user/_base_home.html" %} {% block head_title %} Notifications {% endblock head_title %} {% load static %} {% block content %}
 <div class="container mx-auto my-10">
   <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
     <table class="dark:text-gray-400 w-full text-left text-sm text-gray-500 rtl:text-right">
@@ -34,6 +30,4 @@
     </table>
   </div>
 </div>
-
-{% include "include/footer.html" %}
 {% endblock content %}
