@@ -1,8 +1,8 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 
-from django.db.models import CharField, Value, F
-from core.models import Book, Category, EJournal, Report, Resource
+from django.db.models import Q
+from core.models import Book, Category, EJournal, Report
 
 
 @login_required
@@ -17,6 +17,28 @@ def home(request):
         'featured_ejournal': featured_ejournal,
         # 'recent_reports': recent_reports,
     })
+
+@login_required
+def search(request):
+    query = request.GET.get('q')
+
+    if query:
+        # Search in books, e-journals, and reports (using only title and description)
+        books_results = Book.objects.filter(
+            Q(title__icontains=query) | 
+            Q(description__icontains=query)
+        ).all()
+        e_journals_results = EJournal.objects.filter(
+            Q(title__icontains=query) |
+            Q(description__icontains=query)
+        ).all()
+
+        # Combine the results into a single list of dictionaries
+        results = list(books_results) + list(e_journals_results)
+
+        return render(request, 'user/search_results.html', {'results': results, 'query': query}) # Pass query for display
+    else:
+        return render(request, 'user/search_results.html', {'query': query}) # No query
 
 @login_required
 def category_detail(request, pk):

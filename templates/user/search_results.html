@@ -1,0 +1,37 @@
+{% extends "_base.html" %} {% load static %} {% block content %} {% include "include/header.html" %}
+{% if query %}
+    <h2>Search Results for "{{ query }}"</h2>
+{% else %}
+    <h2>Search</h2>
+{% endif %}
+
+<form class="container mx-auto md:w-1/2" method="GET" action="{% url 'core:search' %}"> 
+    <label for="search" class="dark:text-white sr-only mb-2 text-sm font-medium text-gray-900">Search</label>
+    <div class="relative">
+        <div class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3">
+            <svg class="dark:text-gray-400 h-4 w-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+            </svg>
+        </div>
+        <input type="search" id="search" name="q" class="dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-4 ps-10 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500" placeholder="Search books, journals, and more..." required />
+        <button type="submit" class="dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 absolute bottom-2.5 end-2.5 rounded-lg bg-primary-700 px-4 py-2 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300">Search</button>
+    </div>
+</form>
+{% if results %}
+    <div class="mt-5 grid grid-cols-1 justify-items-center gap-5 text-left lg:grid-cols-2 xl:grid-cols-3">
+        {% for result in results %}
+            <a href="{{ result.get_absolute_url }}" class="dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 flex flex-col items-center rounded-lg border border-gray-200 bg-white shadow hover:bg-gray-100 md:max-w-xl md:flex-row">
+                <img class="h-96 w-full rounded-t-lg object-cover md:h-auto md:w-48 md:rounded-none md:rounded-s-lg" src="{{ result.image.url }}" alt="{{ result.title }}">
+                <div class="flex flex-col justify-between p-4 leading-normal">
+                    <h5 class="dark:text-white mb-2 text-2xl font-bold tracking-tight text-gray-900">
+                        {{ result.title }}
+                    </h5>
+                    <p class="dark:text-gray-400 mb-3 font-normal text-gray-700">{{ result.description }}</p>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No results found for "{{ query }}"</p>
+{% endif %}
+{% include "include/footer.html" %} {% endblock content %}
