@@ -1,0 +1,62 @@
+{% extends "_base.html" %}
+{% load static %}
+{% block content %}
+{% include "user/header.html" %}
+
+<div class="container mx-auto my-10">
+  <div class="relative overflow-x-auto p-4 shadow-md sm:rounded-lg">
+    <div class="flex-column flex flex-wrap items-center justify-between space-y-4 pb-4 sm:flex-row sm:space-y-0">
+      <div>
+        <a href="{% url 'core:add_report' %}" class="dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700 inline-flex items-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-100" type="button">Add Report</a>
+      </div>
+      <label for="table-search" class="sr-only">Search</label>
+      <div class="relative">
+        <div class="rtl:inset-r-0 pointer-events-none absolute inset-y-0 left-0 flex items-center ps-3 rtl:right-0">
+          <svg class="dark:text-gray-400 h-5 w-5 text-gray-500" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+        </div>
+        <input type="text" id="table-search" class="dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 block w-80 rounded-lg border border-gray-300 bg-gray-50 p-2 ps-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500" placeholder="Search for items" />
+      </div>
+    </div>
+    <table class="dark:text-gray-400 w-full text-left text-sm text-gray-500 rtl:text-right">
+      <thead class="dark:bg-gray-700 dark:text-gray-400 bg-gray-50 text-xs uppercase text-gray-700">
+        <tr>
+          <th scope="col" class="px-6 py-3">Title</th>
+          <th scope="col" class="px-6 py-3">Date Published</th>
+          <th scope="col" class="px-6 py-3">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for report in all_reports %}
+        <tr class="dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-600 border-b bg-white hover:bg-gray-50">
+          <th scope="row" class="dark:text-white whitespace-nowrap px-6 py-4 font-medium text-gray-900">{{ report.title }}</th>
+          <td class="px-6 py-4">{{ report.date_published }}</td>
+          <td class="px-6 py-4">
+            <a href="{% url 'core:report_detail' report.pk %}" class="dark:text-blue-500 font-medium text-blue-600 hover:underline">View details</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  const searchInput = document.getElementById('table-search');
+  const tableRows = document.querySelectorAll('tbody tr');
+
+  searchInput.addEventListener('input', () => {
+    const searchTerm = searchInput.value.toLowerCase();
+
+    tableRows.forEach(row => {
+      const title = row.querySelector('th').textContent.toLowerCase();
+      if (title.includes(searchTerm)) {
+        row.style.display = ''; // Show the row
+      } else {
+        row.style.display = 'none'; // Hide the row
+      }
+    });
+  });
+</script>
+
+{% include "include/footer.html" %}
+{% endblock content %}

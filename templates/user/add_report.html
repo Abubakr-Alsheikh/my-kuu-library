@@ -1,0 +1,34 @@
+{% extends "_base.html" %}
+{% load static %}
+{% block content %}
+{% include "user/header.html" %}
+
+<div class="container mx-auto my-10">
+  <div class="relative overflow-x-auto p-4 shadow-md sm:rounded-lg">
+    <div class="flex-column flex flex-wrap items-center justify-between space-y-4 pb-4 sm:flex-row sm:space-y-0">
+      <div>
+        <a href="{% url 'core:user_reports' %}" class="dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700 inline-flex items-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-100" type="button">Back to Reports</a>
+      </div>
+    </div>
+
+    <form method="POST" action="{% url 'core:add_report' %}">
+      {% csrf_token %}
+      <div class="mb-6">
+        <label for="title" class="dark:text-white mb-2 block text-sm font-medium text-gray-900">Title</label>
+        <input type="text" id="title" name="title" class="dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600" placeholder="Enter report title" required>
+      </div>
+
+      <div class="mb-6">
+        <label for="content" class="dark:text-white mb-2 block text-sm font-medium text-gray-900">Content</label>
+        <textarea id="content" name="content" rows="4" class="dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500" placeholder="Enter report content" required></textarea>
+      </div>
+
+      <button type="submit" class="dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 inline-flex items-center rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300">
+        Create Report
+      </button>
+    </form>
+  </div>
+</div>
+
+{% include "include/footer.html" %}
+{% endblock content %}

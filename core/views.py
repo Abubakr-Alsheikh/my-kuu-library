@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.db.models import Q
 from core.models import Book, Category, EJournal, Report, ViewedResource
+from django.contrib import messages
 
 
 @login_required
@@ -148,3 +149,24 @@ def profile(request):
         })
 
     return render(request, 'user/profile.html', {'resources': resources})
+
+
+@login_required
+def user_reports(request):
+    all_reports = Report.objects.filter(author=request.user).order_by('-date_published')
+    return render(request, 'user/reports.html', {'all_reports': all_reports})
+
+@login_required
+def add_report(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+
+        if title and content:
+            new_report = Report(title=title, content=content, author=request.user)
+            new_report.save()
+            messages.success(request, 'Report created successfully!')
+            return redirect('core:user_reports')
+        else:
+            messages.error(request, 'Please fill in all fields.')
+    return render(request, 'user/add_report.html')
