@@ -20,11 +20,12 @@ def home(request):
 
 @login_required
 def resources(request):
-    books = Book.objects.all().values('id', 'title', 'description', 'image', 'date_published')
-    e_journals = EJournal.objects.all().values('id', 'title', 'description', 'image', 'date_published')
-
-    combined_resources = books.union(e_journals).order_by('-date_published')
-
+    books = Book.objects.all() 
+    e_journals = EJournal.objects.all() 
+    combined_resources = list(books) + list(e_journals) 
+    combined_resources.sort(key=lambda x: x.date_published, reverse=True)
+    for book in books:
+        print(book.image.url)
 
     return render(request, 'user/resources.html', {'combined_resources': combined_resources})
 

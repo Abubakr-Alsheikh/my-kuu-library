@@ -1315,6 +1315,10 @@ input:checked + .toggle-bg {
   height: 24rem;
 }
 
+.max-h-96 {
+  max-height: 24rem;
+}
+
 .w-1\/2 {
   width: 50%;
 }
@@ -1339,12 +1343,20 @@ input:checked + .toggle-bg {
   width: 100%;
 }
 
+.min-w-96 {
+  min-width: 24rem;
+}
+
 .max-w-md {
   max-width: 28rem;
 }
 
 .max-w-screen-xl {
   max-width: 1280px;
+}
+
+.max-w-96 {
+  max-width: 24rem;
 }
 
 .flex-1 {

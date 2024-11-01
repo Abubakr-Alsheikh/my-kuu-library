@@ -32,9 +32,14 @@ class Resource(models.Model):
     )  # Generic related_name
     date_published = models.DateTimeField(auto_now_add=True)
     availability = models.BooleanField(default=True)
+    resource_type = models.CharField(max_length=20, choices=[('book', 'Book'), ('e_journal', 'E-Journal')], null=True, blank=True)
 
     class Meta:
         abstract = True
+        
+    
+    def get_absolute_url(self):
+        return reverse('core:resource_detail', args=[self.resource_type, str(self.id)])
 
 
 class Book(Resource):
@@ -45,9 +50,6 @@ class Book(Resource):
     publisher = models.CharField(max_length=255)
     isbn = models.CharField(max_length=20, blank=True, null=True)
 
-    def get_absolute_url(self):
-        return reverse("core:resource_detail", args=[str("book"), str(self.id)])
-
 
 class EJournal(Resource):
     category = models.ForeignKey(
@@ -55,6 +57,3 @@ class EJournal(Resource):
     )
     publisher = models.CharField(max_length=255)
     issn = models.CharField(max_length=20, blank=True, null=True)
-
-    def get_absolute_url(self):
-        return reverse("core:resource_detail", args=[str("e_journal"), str(self.id)])

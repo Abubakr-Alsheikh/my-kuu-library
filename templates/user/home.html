@@ -1,6 +1,6 @@
 {% extends "_base.html" %} {% load static %} {% block content %} {% include "include/header.html" %}
 
-<section class="bg-center bg-no-repeat bg-blend-multiply" style="background-image: url({%static'images/background.webp'%})">
+<section class="bg-center bg-no-repeat bg-blend-multiply" style="background-image: url({% static 'images/background.webp' %})">
   <div class="mx-auto max-w-screen-xl px-4 py-24 text-center lg:py-56">
     <h1 class="mb-10 text-4xl font-extrabold leading-none tracking-tight text-white md:text-5xl lg:text-6xl">Welcome to My KKU Library! Your gateway to knowledge and discovery.</h1>
 
@@ -37,11 +37,11 @@
   <h1 class="mb-16 text-3xl font-extrabold leading-none tracking-tight text-primary-600 md:text-4xl">Featured Books</h1>
   <div class="mt-5 grid grid-cols-1 justify-items-center gap-5 text-left lg:grid-cols-2 xl:grid-cols-3">
     {% for resource in featured_books %}
-    <a href="{{resource.get_absolute_url}}" class="dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 flex flex-col items-center rounded-lg border border-gray-200 bg-white shadow hover:bg-gray-100 md:min-w-96 md:flex-row">
+    <a href="{{resource.get_absolute_url}}" class="dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 flex min-w-96 max-w-96 flex-col items-start rounded-lg border border-gray-200 bg-white shadow hover:bg-gray-100 md:flex-row">
       <img class="h-96 w-full rounded-t-lg object-cover md:h-auto md:w-48 md:rounded-none md:rounded-s-lg" src="{{ resource.image.url }}" alt="{{ resource.title }}" />
       <div class="flex flex-col justify-between p-4 leading-normal">
-        <h5 class="dark:text-white mb-2 text-2xl font-bold tracking-tight text-gray-900">{{ resource.title }}</h5>
-        <p class="dark:text-gray-400 mb-3 font-normal text-gray-700">{{ resource.description }}</p>
+        <h5 class="dark:text-white mb-2 text-2xl font-bold tracking-tight text-gray-900">{{ resource.title|truncatechars:20 }}</h5>
+        <p class="dark:text-gray-400 mb-3 font-normal text-gray-700">{{ resource.description|truncatechars:100 }}</p>
       </div>
     </a>
     {% endfor %}
@@ -53,11 +53,11 @@
   <h1 class="mb-16 text-3xl font-extrabold leading-none tracking-tight text-primary-600 md:text-4xl">Featured Ejournal</h1>
   <div class="mt-5 grid grid-cols-1 justify-items-center gap-5 text-left lg:grid-cols-2 xl:grid-cols-3">
     {% for resource in featured_ejournal %}
-    <a href="{{resource.get_absolute_url}}" class="dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 flex flex-col items-center rounded-lg border border-gray-200 bg-white shadow hover:bg-gray-100 md:max-w-xl md:flex-row">
+    <a href="{{resource.get_absolute_url}}" class="dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 flex min-w-96 max-w-96 flex-col items-start rounded-lg border border-gray-200 bg-white shadow hover:bg-gray-100 md:flex-row">
       <img class="h-96 w-full rounded-t-lg object-cover md:h-auto md:w-48 md:rounded-none md:rounded-s-lg" src="{{ resource.image.url }}" alt="{{ resource.title }}" />
       <div class="flex flex-col justify-between p-4 leading-normal">
-        <h5 class="dark:text-white mb-2 text-2xl font-bold tracking-tight text-gray-900">{{ resource.title }}</h5>
-        <p class="dark:text-gray-400 mb-3 font-normal text-gray-700">{{ resource.description }}</p>
+        <h5 class="dark:text-white mb-2 text-2xl font-bold tracking-tight text-gray-900">{{ resource.title|truncatechars:20 }}</h5>
+        <p class="dark:text-gray-400 mb-3 font-normal text-gray-700">{{ resource.description|truncatechars:100 }}</p>
       </div>
     </a>
     {% endfor %}
