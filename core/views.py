@@ -10,14 +10,16 @@ from django.contrib import messages
 @login_required
 def home(request):
     categories = Category.objects.all()
-    featured_books = Book.objects.all()[:3]
-    featured_ejournal = EJournal.objects.order_by('-date_published')[:3]
+
+    # Combine Book and EJournal queries
+    featured_resources = list(Book.objects.all()[:3]) + list(EJournal.objects.all()[:3])
+    featured_resources.sort(key=lambda x: x.date_published, reverse=True) #Sort by date published
+
     return render(request, 'home/home.html', {
         'categories': categories,
-        'featured_books': featured_books, 
-        'featured_ejournal': featured_ejournal,
-        # 'recent_reports': recent_reports,
+        'featured_resources': featured_resources,
     })
+
 
 @login_required
 def search(request):
@@ -44,12 +46,14 @@ def search(request):
 @login_required
 def category_detail(request, pk):
     category = get_object_or_404(Category, pk=pk)
-    books = category.books.all()  # Get all books in this category
-    e_journals = category.e_journals.all() # Get all e-journals in this category
+
+    # Combine Book and EJournal queries for the category
+    resources = list(category.books.all()) + list(category.e_journals.all())
+    resources.sort(key=lambda x: x.date_published, reverse=True)
+
     return render(request, 'home/category_detail.html', {
         'category': category,
-        'books': books,
-        'e_journals': e_journals,
+        'resources': resources,
     })
 
 @login_required
