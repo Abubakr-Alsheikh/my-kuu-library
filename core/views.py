@@ -1,8 +1,9 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 
+from django.utils import timezone
 from django.db.models import Q
-from core.models import Book, Category, EJournal, Report
+from core.models import Book, Category, EJournal, Report, ViewedResource
 
 
 @login_required
@@ -69,6 +70,28 @@ def resource_detail(request, resource_type,  pk):
         resource = get_object_or_404(EJournal, pk=pk)
     else:
         return redirect('core:home') # Handle invalid resource_type
+
+    # Check if a ViewedResource entry already exists
+    try:
+        viewed_resource = ViewedResource.objects.get(
+            user=request.user,
+            resource_type=resource_type,
+            resource_id=resource.id
+        )
+        # Update the date_viewed and increment view count
+        viewed_resource.date_viewed = timezone.now()
+        viewed_resource.view_count += 1
+        viewed_resource.save()
+    except ViewedResource.DoesNotExist:
+        # Create a new ViewedResource entry
+        viewed_resource = ViewedResource(
+            user=request.user,
+            resource_type=resource_type,
+            resource_id=resource.id,
+            date_viewed=timezone.now()
+        )
+        viewed_resource.save()
+
     # Determine the specific resource type
     if isinstance(resource, Book):
         additional_fields = {
@@ -108,5 +131,20 @@ def notifications(request):
 
 @login_required
 def profile(request):
-    return render(request, 'profile.html')  # Create this template
+    viewed_resources = ViewedResource.objects.filter(user=request.user).order_by('-date_viewed')
+    
+    # Fetch resources from the database based on viewed_resources
+    resources = []
+    for viewed_resource in viewed_resources:
+        if viewed_resource.resource_type == 'book':
+            resource = Book.objects.get(pk=viewed_resource.resource_id)
+        elif viewed_resource.resource_type == 'e_journal':
+            resource = EJournal.objects.get(pk=viewed_resource.resource_id)
+        resources.append({
+            'resource': resource,
+            'resource_type': viewed_resource.resource_type,
+            'date_viewed': viewed_resource.date_viewed,
+            'get_resource_url': viewed_resource.get_resource_url()
+        })
 
+    return render(request, 'user/profile.html', {'resources': resources})

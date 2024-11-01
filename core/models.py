@@ -2,6 +2,7 @@ from django.db import models
 
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.utils import timezone
 
 
 class Category(models.Model):
@@ -67,3 +68,17 @@ class Report(models.Model):
 
     def get_absolute_url(self):
         return reverse('core:report_detail', args=[str(self.id)])
+    
+
+class ViewedResource(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    resource_type = models.CharField(max_length=20)  # e.g., 'book', 'e_journal'
+    resource_id = models.IntegerField()
+    date_viewed = models.DateTimeField(default=timezone.now)
+    view_count = models.IntegerField(default=0)
+
+    def get_resource_url(self):
+        return reverse('core:resource_detail', args=[self.resource_type, self.resource_id])
+
+    def __str__(self):  # For easier debugging in admin
+        return f"{self.user.username} viewed {self.resource_type} {self.resource_id} on {self.date_viewed}"
