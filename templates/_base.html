@@ -6,18 +6,21 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My KKU Library</title>
+    <title>{% block head_title %} {% endblock head_title %}My KKU Library</title>
 
     {% compress css %}
     <link rel="stylesheet" href="{% static 'src/output.css' %}" />
     {% endcompress %}
+    {% block extra_head %} {% endblock extra_head %}
   </head>
 
-  <body class="bg-white dark:bg-gray-800">
-
-    <div class="mx-auto">{% block content %} {% endblock content %}</div>
-
-
+  <body class="dark:bg-gray-800 flex min-h-screen flex-col bg-white">
+    {% block header %} {% endblock header %}
+    <div class="flex-grow">
+      <div class="mx-auto">{% block content %} {% endblock content %}</div>
+    </div>
+    {% block footer %} {% endblock footer %}
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+    {% block extra_body %} {% endblock extra_body %}
   </body>
 </html>
