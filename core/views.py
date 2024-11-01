@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 
 from django.db.models import CharField, Value, F
-from core.models import Book, Category, EJournal, Resource
+from core.models import Book, Category, EJournal, Report, Resource
 
 
 @login_required
@@ -19,30 +19,6 @@ def home(request):
     })
 
 @login_required
-def resources(request):
-    books = Book.objects.all() 
-    e_journals = EJournal.objects.all() 
-    combined_resources = list(books) + list(e_journals) 
-    combined_resources.sort(key=lambda x: x.date_published, reverse=True)
-    for book in books:
-        print(book.image.url)
-
-    return render(request, 'user/resources.html', {'combined_resources': combined_resources})
-
-@login_required
-def reports(request):
-    return render(request, 'reports.html') # Create this template
-
-@login_required
-def notifications(request):
-    return render(request, 'notifications.html')  # Create this template
-
-@login_required
-def profile(request):
-    return render(request, 'profile.html')  # Create this template
-
-
-@login_required
 def category_detail(request, pk):
     category = get_object_or_404(Category, pk=pk)
     books = category.books.all()  # Get all books in this category
@@ -52,6 +28,17 @@ def category_detail(request, pk):
         'books': books,
         'e_journals': e_journals,
     })
+
+@login_required
+def resources(request):
+    books = Book.objects.all() 
+    e_journals = EJournal.objects.all() 
+    combined_resources = list(books) + list(e_journals) 
+    combined_resources.sort(key=lambda x: x.date_published, reverse=True)
+    for book in books:
+        print(book.image.url)
+
+    return render(request, 'user/resources.html', {'combined_resources': combined_resources})
 
 @login_required
 def resource_detail(request, resource_type,  pk):
@@ -83,3 +70,22 @@ def resource_detail(request, resource_type,  pk):
         'resource_type': resource_type,
         **additional_fields
     })
+
+@login_required
+def reports(request):
+    all_reports = Report.objects.order_by('-date_published') # Sort by date_published descending
+    return render(request, 'user/reports.html', {'all_reports': all_reports})
+
+@login_required
+def report_detail(request, pk):
+    report = get_object_or_404(Report, pk=pk)
+    return render(request, 'user/report_detail.html', {'report': report})
+
+@login_required
+def notifications(request):
+    return render(request, 'notifications.html')  # Create this template
+
+@login_required
+def profile(request):
+    return render(request, 'profile.html')  # Create this template
+

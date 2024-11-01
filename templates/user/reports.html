@@ -1,0 +1,17 @@
+{% extends "_base.html" %} {% load static %} {% block content %} {% include "include/header.html" %}
+<section class="container mx-auto mt-16 px-5 text-center sm:px-0">
+    <h1 class="mb-16 text-3xl font-extrabold leading-none tracking-tight text-primary-600 md:text-4xl">Reports</h1>
+  
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {% for report in all_reports %}
+      <a href="{{ report.get_absolute_url }}" class="dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 block max-w-sm rounded-lg border border-gray-200 bg-white p-6 shadow hover:bg-gray-100">
+        <h5 class="dark:text-white mb-2 text-2xl font-bold tracking-tight text-gray-900">{{ report.title }}</h5>
+        <p class="dark:text-gray-400 font-normal text-gray-700">{{ report.content|truncatechars:100 }}</p>
+        <p class="dark:text-gray-400 text-sm text-gray-500">
+          Published by: {{  report.author.username }} - {{ report.date_published|date:"F j, Y" }}
+        </p>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+{% include "include/footer.html" %} {% endblock content %}

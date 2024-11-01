@@ -57,3 +57,13 @@ class EJournal(Resource):
     )
     publisher = models.CharField(max_length=255)
     issn = models.CharField(max_length=20, blank=True, null=True)
+
+
+class Report(models.Model):
+    title = models.CharField(max_length=255)
+    content = models.TextField()  # Use TextField for larger content
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='published_reports')
+    date_published = models.DateTimeField(auto_now_add=True)  # Automatically set on creation
+
+    def get_absolute_url(self):
+        return reverse('core:report_detail', args=[str(self.id)])
