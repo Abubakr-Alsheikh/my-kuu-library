@@ -12,8 +12,15 @@ urlpatterns = [
     path('reports/<int:pk>/', views.report_detail, name='report_detail'),
     path('categories/<int:pk>/', views.category_detail, name='category_detail'),
     path('resources/<str:resource_type>/<int:pk>/', views.resource_detail, name='resource_detail'),
+    # User views
     path('profile/', views.profile, name='profile'),
     path('user-reports/', views.user_reports, name='user_reports'),
     path('reports/add/', views.add_report, name='add_report'),
     path('notifications/', views.notifications, name='notifications'),
+    # Dashboard views
+    path('dashboard/', views.dashboard_home, name='dashboard'),
+    path('user_management/', views.user_management, name='user_management'),
+    path('book_management/', views.resource_management, name='resource_management'),
+    path('report_management/', views.category_management, name='category_management'),
+    path('notification_management/', views.notification_management, name='notification_management'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,11 +1,38 @@
+from datetime import timedelta
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
-
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.views import LoginView
 from django.utils import timezone
 from django.db.models import Q
+from core.decorators import admin_required
 from core.models import Book, Category, EJournal, Notification, Report, ViewedResource
 from django.contrib import messages
 
+class MyLoginView(LoginView):
+    template_name = 'registration/login.html'
+    redirect_authenticated_user = True  # Redirect authenticated users
+
+    def form_valid(self, form):
+        remember_me = form.cleaned_data.get('remember_me')  # Get the remember_me value
+        username = form.cleaned_data['username']
+        password = form.cleaned_data['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if remember_me:
+                # Set a longer session expiry (1 hour)
+                self.request.session.set_expiry(timedelta(hours=1).seconds)
+            else:
+                # Set a shorter session expiry (or default, which is browser session)
+                self.request.session.set_expiry(0) # Session expires when browser closes.
+            if user.is_staff:
+                login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
+                return redirect('core:dashboard') # Redirect to admin if is_staff
+            else:
+                login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
+                return redirect('core:home')  #Redirect to home page otherwise.
+        else:
+            return self.form_invalid(form) #Handle invalid login
 
 @login_required
 def home(request):
@@ -130,6 +157,8 @@ def report_detail(request, pk):
     report = get_object_or_404(Report, pk=pk)
     return render(request, 'home/report_detail.html', {'report': report})
 
+# --------------- User Profile Logic
+
 @login_required
 def profile(request):
     viewed_resources = ViewedResource.objects.filter(user=request.user).order_by('-date_viewed')
@@ -178,3 +207,26 @@ def notifications(request):
         'notifications': notifications
     }
     return render(request, 'user/notifications.html', context)
+
+# --------------- Dashboard Logic
+
+@admin_required
+def dashboard_home(request):
+    return render(request, 'dashboard/home.html')
+
+@admin_required
+def user_management(request):
+    return render(request, 'dashboard/user_management.html')
+
+@admin_required
+def resource_management(request):
+    return render(request, 'dashboard/resource_management.html')
+
+@admin_required
+def category_management(request):
+    return render(request, 'dashboard/category_management.html')
+
+@admin_required
+def notification_management(request):
+        return render(request, 'dashboard/notification_management.html')
+

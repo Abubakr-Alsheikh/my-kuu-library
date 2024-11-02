@@ -29,13 +29,12 @@
                     <div class="flex items-center justify-between">
                         <div class="flex items-start">
                             <div class="flex h-5 items-center">
-                              <input id="remember" aria-describedby="remember" type="checkbox" class="focus:ring-3 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800 h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-primary-300">
+                              <input id="remember" name="remember_me" aria-describedby="remember" type="checkbox" class="focus:ring-3 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800 h-4 w-4 rounded border border-gray-300 bg-gray-50 focus:ring-primary-300">
                             </div>
                             <div class="ml-3 text-sm">
                               <label for="remember" class="dark:text-gray-300 text-gray-500">Remember me</label>
                             </div>
                         </div>
-                        <a href="{% url 'password_reset' %}" class="dark:text-primary-500 text-sm font-medium text-primary-600 hover:underline">Forgot password?</a>
                     </div>
                     <button type="submit" class="dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 w-full rounded-lg bg-primary-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary-300">Sign in</button>
                 </form>
