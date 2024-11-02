@@ -24,6 +24,11 @@ urlpatterns = [
     path('edit_user/<int:pk>/', views.edit_user, name='edit_user'),
     path('delete_user/<int:pk>/', views.delete_user, name='delete_user'),
     path('book_management/', views.resource_management, name='resource_management'),
-    path('report_management/', views.category_management, name='category_management'),
+
+    path('category_management/', views.category_management, name='category_management'),
+    path('add_category/', views.add_category, name='add_category'),
+    path('edit_category/<int:pk>/', views.edit_category, name='edit_category'),
+    path('delete_category/<int:pk>/', views.delete_category, name='delete_category'),
+
     path('notification_management/', views.notification_management, name='notification_management'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

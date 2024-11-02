@@ -6,7 +6,7 @@ from django.contrib.auth.views import LoginView
 from django.utils import timezone
 from django.db.models import Q
 from core.decorators import admin_required
-from core.forms import UserForm
+from core.forms import CategoryForm, UserForm
 from core.models import AuditLog, Book, Category, EJournal, Notification, Report, ViewedResource
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -279,7 +279,66 @@ def resource_management(request):
 
 @admin_required
 def category_management(request):
-    return render(request, 'dashboard/category_management.html')
+    if request.user.is_staff:
+        categories = Category.objects.all()
+        return render(request, 'dashboard/category_management.html', {'categories': categories})
+    else:
+        return redirect('core:home')
+
+@admin_required
+def add_category(request):
+    if request.method == 'POST':
+        form = CategoryForm(request.POST, request.FILES)
+        if form.is_valid():
+            category = form.save()  # Save the category
+            AuditLog.objects.create(
+                action="Category created",
+                user=request.user,
+                type="category",
+                type_id=category.id,
+            )
+            messages.success(request, 'Category created successfully!')
+            return redirect('core:category_management')
+        else:
+            messages.error(request, 'Invalid form submission.')
+    else:
+        form = CategoryForm()
+    return render(request, 'dashboard/category_form.html', {'form': form})
+
+@admin_required
+def edit_category(request, pk):
+    category = get_object_or_404(Category, pk=pk)
+    if request.method == 'POST':
+        form = CategoryForm(request.POST, request.FILES, instance=category)
+        if form.is_valid():
+            form.save()
+            AuditLog.objects.create(
+                action="Category updated",
+                user=request.user,
+                type="category",
+                type_id=category.id,
+            )
+            messages.success(request, 'Category updated successfully!')
+            return redirect('core:category_management')
+        else:
+            messages.error(request, 'Invalid form submission.')
+    else:
+        form = CategoryForm(instance=category)
+    return render(request, 'dashboard/category_form.html', {'form': form})
+
+@admin_required
+def delete_category(request, pk):
+    category = get_object_or_404(Category, pk=pk)
+    category_id = category.id  # Store category ID before deletion
+    category.delete()
+    AuditLog.objects.create(
+        action="Category deleted",
+        user=request.user,
+        type="category",
+        type_id=category_id,
+    )
+    messages.success(request, 'Category deleted successfully!')
+    return redirect('core:category_management')
 
 @admin_required
 def notification_management(request):

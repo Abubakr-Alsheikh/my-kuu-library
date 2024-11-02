@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.models import User
 
+from core.models import Category
+
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(required=False, widget=forms.PasswordInput)
@@ -20,3 +22,9 @@ class UserForm(forms.ModelForm):
             user.save()
         
         return user
+
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ['name', 'description', 'image']
