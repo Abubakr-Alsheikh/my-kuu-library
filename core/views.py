@@ -6,7 +6,7 @@ from django.contrib.auth.views import LoginView
 from django.utils import timezone
 from django.db.models import Q
 from core.decorators import admin_required
-from core.models import Book, Category, EJournal, Notification, Report, ViewedResource
+from core.models import AuditLog, Book, Category, EJournal, Notification, Report, ViewedResource
 from django.contrib import messages
 
 class MyLoginView(LoginView):
@@ -212,7 +212,8 @@ def notifications(request):
 
 @admin_required
 def dashboard_home(request):
-    return render(request, 'dashboard/home.html')
+    latest_actions = AuditLog.objects.all().order_by('-timestamp')
+    return render(request, 'dashboard/home.html', {'latest_actions': latest_actions})
 
 @admin_required
 def user_management(request):

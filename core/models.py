@@ -92,3 +92,26 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"Notification: {self.content[:50]}..."
+    
+
+class AuditLog(models.Model):
+    action = models.CharField(max_length=255) #e.g., "Book created", "Report updated"
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True) #Who performed the action
+    type = models.CharField(max_length=50, blank=True, null=True) #Type of resource affected (Book, Report etc)
+    type_id = models.IntegerField(blank=True, null=True) #ID of resource affected
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.action} by {self.user} at {self.timestamp}"
+
+    def get_resource_url(self):
+        """Construct the resource's URL if possible."""
+        from django.urls import reverse #Import here to avoid circular import issues
+
+        if self.type and self.type_id:
+            if self.type == 'book':
+                return reverse('core:resource_detail', args=['book', self.type_id])
+            elif self.type == 'report':
+                return reverse('core:report_detail', args=[self.type_id])
+            # Add other resource types as needed...
+        return None #Return None if resource cannot be linked
