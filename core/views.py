@@ -466,7 +466,9 @@ def add_notification(request):
     if request.method == 'POST':
         form = NotificationForm(request.POST)
         if form.is_valid():
-            notification = form.save()
+            notification = form.save(commit=False)
+            notification.sender = request.user  # Set sender to the current admin
+            notification.save() 
             AuditLog.objects.create(
                 action="Notification created",
                 user=request.user,
