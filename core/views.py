@@ -6,8 +6,10 @@ from django.contrib.auth.views import LoginView
 from django.utils import timezone
 from django.db.models import Q
 from core.decorators import admin_required
+from core.forms import UserForm
 from core.models import AuditLog, Book, Category, EJournal, Notification, Report, ViewedResource
 from django.contrib import messages
+from django.contrib.auth.models import User
 
 class MyLoginView(LoginView):
     template_name = 'registration/login.html'
@@ -217,7 +219,59 @@ def dashboard_home(request):
 
 @admin_required
 def user_management(request):
-    return render(request, 'dashboard/user_management.html')
+    if request.user.is_staff:
+        users = User.objects.filter(is_superuser=False).order_by('username')
+        return render(request, 'dashboard/user_management.html', {'users': users})
+    else:
+        return redirect('core:home')
+
+@admin_required
+def add_user(request):
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            new_user = form.save()
+            AuditLog.objects.create(
+                action="User created", user=request.user, type="user", type_id=new_user.id
+            )
+            messages.success(request, 'User created successfully!')
+            return redirect('core:user_management')
+        else:
+            errMsg = [(k, v[0]) for k, v in form.errors.items()]
+            messages.error(request, f'Invalid form submission. {errMsg[0][1]}')
+    else:
+        form = UserForm()
+    return render(request, 'dashboard/user_form.html', {'form': form})
+
+@admin_required
+def edit_user(request, pk):
+    user = get_object_or_404(User, pk=pk)
+    if request.method == 'POST':
+        form = UserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            AuditLog.objects.create(
+                action="User updated", user=request.user, type="user", type_id=user.id
+            )
+            messages.success(request, 'User updated successfully!')
+            return redirect('core:user_management')
+        else:
+            errMsg = [(k, v[0]) for k, v in form.errors.items()]
+            messages.error(request, f'Invalid form submission. {errMsg[0][1]}')
+    else:
+        form = UserForm(instance=user)
+    return render(request, 'dashboard/user_form.html', {'form': form})
+
+@admin_required
+def delete_user(request, pk):
+    user = get_object_or_404(User, pk=pk)
+    user_id = user.id # Store user ID before deletion
+    user.delete()
+    AuditLog.objects.create(
+        action="User deleted", user=request.user, type="user", type_id=user_id
+    )
+    messages.success(request, 'User deleted successfully!')
+    return redirect('core:user_management')
 
 @admin_required
 def resource_management(request):

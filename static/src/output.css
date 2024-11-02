@@ -1447,6 +1447,10 @@ input:checked + .toggle-bg {
   max-width: 20rem;
 }
 
+.max-w-2xl {
+  max-width: 42rem;
+}
+
 .flex-1 {
   flex: 1 1 0%;
 }
@@ -1597,6 +1601,10 @@ input:checked + .toggle-bg {
 
 .gap-6 {
   gap: 1.5rem;
+}
+
+.gap-4 {
+  gap: 1rem;
 }
 
 .space-x-2 > :not([hidden]) ~ :not([hidden]) {
@@ -2104,6 +2112,11 @@ input:checked + .toggle-bg {
   color: rgb(194 120 3 / var(--tw-text-opacity));
 }
 
+.text-red-600 {
+  --tw-text-opacity: 1;
+  color: rgb(224 36 36 / var(--tw-text-opacity));
+}
+
 .antialiased {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -2332,7 +2345,16 @@ input:checked + .toggle-bg {
   --tw-ring-color: rgb(22 163 74 / var(--tw-ring-opacity));
 }
 
+.focus\:ring-primary-200:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(187 247 208 / var(--tw-ring-opacity));
+}
+
 @media (min-width: 640px) {
+  .sm\:col-span-2 {
+    grid-column: span 2 / span 2;
+  }
+
   .sm\:mb-0 {
     margin-bottom: 0px;
   }
@@ -2345,12 +2367,24 @@ input:checked + .toggle-bg {
     margin-top: 2rem;
   }
 
+  .sm\:mt-6 {
+    margin-top: 1.5rem;
+  }
+
   .sm\:max-w-md {
     max-width: 28rem;
   }
 
+  .sm\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .sm\:flex-row {
     flex-direction: row;
+  }
+
+  .sm\:gap-6 {
+    gap: 1.5rem;
   }
 
   .sm\:space-y-0 > :not([hidden]) ~ :not([hidden]) {
@@ -2584,6 +2618,11 @@ input:checked + .toggle-bg {
   .lg\:py-56 {
     padding-top: 14rem;
     padding-bottom: 14rem;
+  }
+
+  .lg\:py-16 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
   }
 
   .lg\:text-6xl {

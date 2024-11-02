@@ -20,6 +20,9 @@ urlpatterns = [
     # Dashboard views
     path('dashboard/', views.dashboard_home, name='dashboard'),
     path('user_management/', views.user_management, name='user_management'),
+    path('add_user/', views.add_user, name='add_user'),
+    path('edit_user/<int:pk>/', views.edit_user, name='edit_user'),
+    path('delete_user/<int:pk>/', views.delete_user, name='delete_user'),
     path('book_management/', views.resource_management, name='resource_management'),
     path('report_management/', views.category_management, name='category_management'),
     path('notification_management/', views.notification_management, name='notification_management'),
