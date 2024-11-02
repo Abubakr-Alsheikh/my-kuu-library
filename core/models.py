@@ -111,7 +111,9 @@ class AuditLog(models.Model):
         if self.type and self.type_id:
             if self.type == 'book':
                 return reverse('core:resource_detail', args=['book', self.type_id])
-            elif self.type == 'report':
-                return reverse('core:report_detail', args=[self.type_id])
+            elif self.type == 'e_journal':
+                return reverse('core:resource_detail', args=['e_journal',self.type_id])
+            elif self.type == 'category':
+                return reverse('core:category_detail', args=[self.type_id])
             # Add other resource types as needed...
         return None #Return None if resource cannot be linked
