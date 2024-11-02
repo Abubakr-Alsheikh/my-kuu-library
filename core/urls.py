@@ -23,7 +23,14 @@ urlpatterns = [
     path('add_user/', views.add_user, name='add_user'),
     path('edit_user/<int:pk>/', views.edit_user, name='edit_user'),
     path('delete_user/<int:pk>/', views.delete_user, name='delete_user'),
-    path('book_management/', views.resource_management, name='resource_management'),
+
+    path('resource_management/', views.resource_management, name='resource_management'),
+    path('resource/add_book/', views.add_book, name='add_book'),
+    path('resource/add_e_journal/', views.add_e_journal, name='add_e_journal'),
+    path('resource/edit_book/<int:pk>/', views.edit_book, name='edit_book'),
+    path('resource/edit_e_journal/<int:pk>/', views.edit_e_journal, name='edit_e_journal'),
+    path('resource/delete_book/<int:pk>/', views.delete_book, name='delete_book'),
+    path('resource/delete_e_journal/<int:pk>/', views.delete_e_journal, name='delete_e_journal'),
 
     path('category_management/', views.category_management, name='category_management'),
     path('add_category/', views.add_category, name='add_category'),

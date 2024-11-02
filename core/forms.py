@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from core.models import Category
+from core.models import Book, Category, EJournal
 
 
 class UserForm(forms.ModelForm):
@@ -28,3 +28,14 @@ class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
         fields = ['name', 'description', 'image']
+        
+
+class BookForm(forms.ModelForm):
+    class Meta:
+        model = Book
+        fields = ['title', 'description', 'image', 'author', 'publisher', 'isbn', 'category']
+
+class EJournalForm(forms.ModelForm):
+    class Meta:
+        model = EJournal
+        fields = ['title', 'description', 'image', 'publisher', 'issn', 'category']

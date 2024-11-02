@@ -6,7 +6,7 @@ from django.contrib.auth.views import LoginView
 from django.utils import timezone
 from django.db.models import Q
 from core.decorators import admin_required
-from core.forms import CategoryForm, UserForm
+from core.forms import BookForm, CategoryForm, EJournalForm, UserForm
 from core.models import AuditLog, Book, Category, EJournal, Notification, Report, ViewedResource
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -273,9 +273,122 @@ def delete_user(request, pk):
     messages.success(request, 'User deleted successfully!')
     return redirect('core:user_management')
 
+
 @admin_required
 def resource_management(request):
-    return render(request, 'dashboard/resource_management.html')
+    if request.user.is_staff:
+        # Combine Book and EJournal queries
+        resources = list(Book.objects.all()) + list(EJournal.objects.all())
+        resources.sort(key=lambda x: x.date_published, reverse=True)
+
+        return render(request, 'dashboard/resource_management.html', {'resources': resources})
+    else:
+        return redirect('core:home')
+
+@admin_required
+def add_book(request):
+    if request.method == 'POST':
+        form = BookForm(request.POST, request.FILES)
+        if form.is_valid():
+            book = form.save(commit=False)  # Create the Book object but don't save yet
+            book.resource_type = 'book'  # Set the resource_type
+            book.published_by = request.user  # Set the published_by (admin user)
+            book.availability = True  # Set availability to True (default)
+            book.save()
+            AuditLog.objects.create(
+                action="Book created", user=request.user, type="book", type_id=book.id
+            )
+            messages.success(request, 'Book created successfully!')
+            return redirect('core:resource_management')
+        else:
+            messages.error(request, 'Invalid form submission.')
+    else:
+        form = BookForm()
+        categories = Category.objects.all()
+    return render(request, 'dashboard/resource_form.html', {'form': form, 'resource_type': 'book', 'categories': categories})
+
+@admin_required
+def add_e_journal(request):
+    if request.method == 'POST':
+        form = EJournalForm(request.POST, request.FILES)
+        if form.is_valid():
+            e_journal = form.save(commit=False) 
+            e_journal.resource_type = 'e_journal'  # Set the resource_type
+            e_journal.published_by = request.user # Set the published_by (admin user)
+            e_journal.availability = True # Set availability to True (default)
+            e_journal.save()
+            AuditLog.objects.create(
+                action="E-Journal created", user=request.user, type="e_journal", type_id=e_journal.id
+            )
+            messages.success(request, 'E-Journal created successfully!')
+            return redirect('core:resource_management')
+        else:
+            messages.error(request, 'Invalid form submission.')
+    else:
+        form = EJournalForm()
+        categories = Category.objects.all()
+    return render(request, 'dashboard/resource_form.html', {'form': form, 'resource_type': 'e_journal', 'categories': categories})
+
+
+@admin_required
+def edit_book(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+    if request.method == 'POST':
+        form = BookForm(request.POST, request.FILES, instance=book)
+        if form.is_valid():
+            form.save()
+            AuditLog.objects.create(
+                action="Book updated", user=request.user, type="book", type_id=book.id
+            )
+            messages.success(request, 'Book updated successfully!')
+            return redirect('core:resource_management')
+        else:
+            messages.error(request, 'Invalid form submission.')
+    else:
+        form = BookForm(instance=book)
+        categories = Category.objects.all()
+    return render(request, 'dashboard/resource_form.html', {'form': form, 'resource_type': 'book', 'categories': categories})
+
+@admin_required
+def edit_e_journal(request, pk):
+    e_journal = get_object_or_404(EJournal, pk=pk)
+    if request.method == 'POST':
+        form = EJournalForm(request.POST, request.FILES, instance=e_journal)
+        if form.is_valid():
+            form.save()
+            AuditLog.objects.create(
+                action="E-Journal updated", user=request.user, type="e_journal", type_id=e_journal.id
+            )
+            messages.success(request, 'E-Journal updated successfully!')
+            return redirect('core:resource_management')
+        else:
+            messages.error(request, 'Invalid form submission.')
+    else:
+        form = EJournalForm(instance=e_journal)
+        categories = Category.objects.all()
+    return render(request, 'dashboard/resource_form.html', {'form': form, 'resource_type': 'e_journal', 'categories': categories})
+
+@admin_required
+def delete_book(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+    book_id = book.id
+    book.delete()
+    AuditLog.objects.create(
+        action="Book deleted", user=request.user, type="book", type_id=book_id
+    )
+    messages.success(request, 'Book deleted successfully!')
+    return redirect('core:resource_management')
+
+@admin_required
+def delete_e_journal(request, pk):
+    e_journal = get_object_or_404(EJournal, pk=pk)
+    e_journal_id = e_journal.id
+    e_journal.delete()
+    AuditLog.objects.create(
+        action="E-Journal deleted", user=request.user, resource_type="e_journal", resource_id=e_journal_id
+    )
+    messages.success(request, 'E-Journal deleted successfully!')
+    return redirect('core:resource_management')
 
 @admin_required
 def category_management(request):
