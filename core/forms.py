@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from core.models import Book, Category, EJournal
+from core.models import Book, Category, EJournal, Notification
 
 
 class UserForm(forms.ModelForm):
@@ -39,3 +39,9 @@ class EJournalForm(forms.ModelForm):
     class Meta:
         model = EJournal
         fields = ['title', 'description', 'image', 'publisher', 'issn', 'category']
+
+
+class NotificationForm(forms.ModelForm):
+    class Meta:
+        model = Notification
+        fields = ['content', 'sender']

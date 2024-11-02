@@ -38,4 +38,7 @@ urlpatterns = [
     path('delete_category/<int:pk>/', views.delete_category, name='delete_category'),
 
     path('notification_management/', views.notification_management, name='notification_management'),
+    path('notification/add_notification/', views.add_notification, name='add_notification'),
+    path('notification/edit_notification/<int:pk>/', views.edit_notification, name='edit_notification'),
+    path('notification/delete_notification/<int:pk>/', views.delete_notification, name='delete_notification'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

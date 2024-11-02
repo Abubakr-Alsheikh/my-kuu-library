@@ -6,7 +6,7 @@ from django.contrib.auth.views import LoginView
 from django.utils import timezone
 from django.db.models import Q
 from core.decorators import admin_required
-from core.forms import BookForm, CategoryForm, EJournalForm, UserForm
+from core.forms import BookForm, CategoryForm, EJournalForm, NotificationForm, UserForm
 from core.models import AuditLog, Book, Category, EJournal, Notification, Report, ViewedResource
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -455,5 +455,65 @@ def delete_category(request, pk):
 
 @admin_required
 def notification_management(request):
-        return render(request, 'dashboard/notification_management.html')
+    if request.user.is_staff:
+        notifications = Notification.objects.all().order_by('-timestamp')
+        return render(request, 'dashboard/notification_management.html', {'notifications': notifications})
+    else:
+        return redirect('core:home')
 
+@admin_required
+def add_notification(request):
+    if request.method == 'POST':
+        form = NotificationForm(request.POST)
+        if form.is_valid():
+            notification = form.save()
+            AuditLog.objects.create(
+                action="Notification created",
+                user=request.user,
+                type="notification",
+                type_id=notification.id,
+            )
+            messages.success(request, 'Notification created successfully!')
+            return redirect('core:notification_management')
+        else:
+            messages.error(request, 'Invalid form submission.')
+    else:
+        form = NotificationForm()
+        users = User.objects.all()
+        return render(request, 'dashboard/notification_form.html', {'form': form, 'users': users})
+
+@admin_required
+def edit_notification(request, pk):
+    notification = get_object_or_404(Notification, pk=pk)
+    if request.method == 'POST':
+        form = NotificationForm(request.POST, instance=notification)
+        if form.is_valid():
+            form.save()
+            AuditLog.objects.create(
+                action="Notification updated",
+                user=request.user,
+                type="notification",
+                type_id=notification.id,
+            )
+            messages.success(request, 'Notification updated successfully!')
+            return redirect('core:notification_management')
+        else:
+            messages.error(request, 'Invalid form submission.')
+    else:
+        form = NotificationForm(instance=notification)
+        users = User.objects.all()
+        return render(request, 'dashboard/notification_form.html', {'form': form, 'users': users})
+
+@admin_required
+def delete_notification(request, pk):
+    notification = get_object_or_404(Notification, pk=pk)
+    notification_id = notification.id
+    notification.delete()
+    AuditLog.objects.create(
+        action="Notification deleted",
+        user=request.user,
+        type="notification",
+        type_id=notification_id,
+    )
+    messages.success(request, 'Notification deleted successfully!')
+    return redirect('core:notification_management')
