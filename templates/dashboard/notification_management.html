@@ -29,7 +29,7 @@
           <th scope="col" class="px-6 py-3">Actions</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody id="notification-table-body">
         {% for notification in notifications %}
         <tr class="dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-600 border-b bg-white hover:bg-gray-50">
           <th scope="row" class="dark:text-white whitespace-nowrap px-6 py-4 font-medium text-gray-900">{{ notification.content }}</th>
@@ -54,7 +54,7 @@
 
 <script>
     const searchInput = document.getElementById("table-search");
-    const tableRows = document.querySelectorAll("#resource-table-body tr");
+    const tableRows = document.querySelectorAll("#notification-table-body tr");
   
     searchInput.addEventListener("input", () => {
       const searchTerm = searchInput.value.toLowerCase();
