@@ -22,11 +22,7 @@
           <td class="dark:text-white whitespace-nowrap px-6 py-4 font-medium text-gray-900">{{ action.action }}</td>
           <td class="px-6 py-4">{{ action.user.username }}</td>
           <td class="px-6 py-4">
-            {% if action.get_resource_url %}
-                <a href="{{ action.get_resource_url }}" class="text-blue-500 hover:underline">{{ action.type }} #{{ action.type_id }}</a>
-            {% else %}
-                -
-            {% endif %}
+            <p class="text-blue-500 hover:underline">{{ action.type }} #{{ action.type_id }}</p>
           </td>
           <td class="px-6 py-4">{{ action.timestamp }}</td>
         </tr>
