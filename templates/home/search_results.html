@@ -1,8 +1,8 @@
 {% extends "home/_base_home.html" %} {% block head_title %} My KKU Library - Search Results for "{{ query }}" {% endblock head_title %} {% load static %} {% block content %}
 {% if query %}
-    <h2>Search Results for "{{ query }}"</h2>
+    <h2 class="my-8 text-center text-xl font-extrabold leading-none tracking-tight text-primary-600 md:text-2xl">Search Results for "{{ query }}"</h2>
 {% else %}
-    <h2>Search</h2>
+    <h2 class="my-8 text-center text-xl font-extrabold leading-none tracking-tight text-primary-600 md:text-2xl">Search</h2>
 {% endif %}
 
 <form class="container mx-auto md:w-1/2" method="GET" action="{% url 'core:search' %}"> 
@@ -20,18 +20,19 @@
 {% if results %}
     <div class="mt-5 grid grid-cols-1 justify-items-center gap-5 text-left lg:grid-cols-2 xl:grid-cols-3">
         {% for result in results %}
-            <a href="{{ result.get_absolute_url }}" class="dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 flex flex-col items-center rounded-lg border border-gray-200 bg-white shadow hover:bg-gray-100 md:max-w-xl md:flex-row">
-                <img class="h-96 w-full rounded-t-lg object-cover md:h-auto md:w-48 md:rounded-none md:rounded-s-lg" src="{{ result.image.url }}" alt="{{ result.title }}">
-                <div class="flex flex-col justify-between p-4 leading-normal">
-                    <h5 class="dark:text-white mb-2 text-2xl font-bold tracking-tight text-gray-900">
-                        {{ result.title }}
-                    </h5>
-                    <p class="dark:text-gray-400 mb-3 font-normal text-gray-700">{{ result.description }}</p>
-                </div>
-            </a>
+        <a href="{{result.get_absolute_url}}" class="dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700 flex min-w-96 max-w-96 flex-col items-start rounded-lg border border-gray-200 bg-white shadow hover:bg-gray-100 md:flex-row">
+            <img class="h-96 w-full rounded-t-lg object-cover md:h-auto md:w-48 md:rounded-none md:rounded-s-lg" src="{{ result.image.url }}" alt="{{ result.title }}" />
+            <div class="flex flex-col justify-between p-4 leading-normal">
+              <h5 class="dark:text-white mb-2 text-2xl font-bold tracking-tight text-gray-900">{{ result.title|truncatechars:20 }}</h5>
+              ({{ result.result_type }})
+              <p class="dark:text-gray-400 mb-3 font-normal text-gray-700">
+                {{ result.description|truncatechars:100 }}
+              </p>
+            </div>
+          </a>
         {% endfor %}
     </div>
 {% else %}
-    <p>No results found for "{{ query }}"</p>
+    <p class="my-6 text-center text-lg font-extrabold leading-none tracking-tight text-primary-300 md:text-xl">No results found for "{{ query }}"</p>
 {% endif %}
 {% endblock content %}
